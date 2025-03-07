@@ -121,4 +121,22 @@ def my_datetime_helper_function(year):
 
 
 def conv_endian(num, endian='big'):
-    pass
+    """Takes an integer (num) and converts it to a hexadecimal number."""
+    hexadecimal = []
+    while num % 16 != 0:
+        num = num // 16
+        remainder = num % 16
+        hexadecimal.insert(0, str(remainder))
+    for num in hexadecimal:
+        if num == '10':
+            num = 'A'
+        elif num == '11':
+            num = 'B'
+        elif num == '12':
+            num = 'C'
+        elif num == '13':
+            num = 'D'
+        elif num == '14':
+            num = 'E'
+        elif num == '15':
+            num = 'F'
