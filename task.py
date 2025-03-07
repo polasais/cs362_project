@@ -131,7 +131,7 @@ def conv_endian(num, endian='big'):
         num = abs(num)
 
     hexadecimal = []
-    while num % 16 != 0:
+    while num > 0:
         remainder = num % 16
         hexadecimal.insert(0, str(remainder))
         num = num // 16
@@ -166,10 +166,15 @@ def conv_endian(num, endian='big'):
             count += 1
     elif endian == 'little':
         new_hexastring = hexastring[::-1]
-        if count % 2 == 0 and count != 0:
-            new_hexastring += ' '
-        
+        # Create a list of num pairs that will need to be reversed.
+        num_pairs = [new_hexastring[curr_num:curr_num+2] for
+                     curr_num in range(0, len(new_hexastring), 2)]
+        # For range: range(start (incl), end (excl), by 2's)
+        # Slicing is string[start_indx (incl): end_indx (excl)], so +2, not +1.
+        # We're creating a list of num pairs which will need to be reversed:
+        new_hexastring = ' '.join(reversed(num_pairs))
+
     # Insert a negative in the front if the original int was negative.
-    if negative is True:
+    if negative:
         new_hexastring = '-' + new_hexastring
     return new_hexastring
