@@ -122,17 +122,19 @@ def my_datetime_helper_function(year):
 
 def conv_endian(num, endian='big'):
     """Takes an integer (num) and converts it to a hexadecimal number."""
-    if endian != 'big' or endian != 'little':
+    if endian != 'big' and endian != 'little':
         return None
     negative = False
-    if num[0] == '-':
+    # If int is neg, make pos for now so it's easier to work with, and later make back to neg.
+    if num < 0:
         negative = True
-        num = num(abs)
+        num = abs(num)
+
     hexadecimal = []
     while num % 16 != 0:
-        num = num // 16
         remainder = num % 16
         hexadecimal.insert(0, str(remainder))
+        num = num // 16
     for num in hexadecimal:
         if num == '10':
             num = 'A'
@@ -158,8 +160,9 @@ def conv_endian(num, endian='big'):
             # Since it's big endian, just add remainders in normal order.
             count += 1
     elif endian == 'little':
+        new_hexastring = hexastring[::-1]
         for num in hexadecimal:
-            
+
     # Insert a negative in the front if the original int was negative.
     if negative is True:
         hexastring.insert(0, '-')
