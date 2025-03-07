@@ -120,5 +120,61 @@ def my_datetime_helper_function(year):
     return False
 
 
+def convert_to_hex(num):
+    """Converts a positive integer to a hexadecimal string."""
+    hexadecimal = []
+    while num > 0:
+        remainder = num % 16
+        hexadecimal.insert(0, str(remainder))
+        num = num // 16
+
+    hexastring = ''
+    for num in hexadecimal:
+        if num == '10':
+            hexastring += 'A'
+        elif num == '11':
+            hexastring += 'B'
+        elif num == '12':
+            hexastring += 'C'
+        elif num == '13':
+            hexastring += 'D'
+        elif num == '14':
+            hexastring += 'E'
+        elif num == '15':
+            hexastring += 'F'
+        else:
+            hexastring += str(num)
+    return hexastring
+
+
 def conv_endian(num, endian='big'):
-    pass
+    """Converts an integer to a hexadecimal string in either big or little endian format."""
+    if endian != 'big' and endian != 'little':
+        return None
+
+    negative = False
+    if num < 0:
+        negative = True
+        num = abs(num)
+
+    hexastring = convert_to_hex(num)
+
+    if endian == 'big':
+        # Big Endian: Just return the hex string with spaces between every two digits.
+        count = 0
+        new_hexastring = ''
+        for curr_num in hexastring:
+            if count % 2 == 0 and count != 0:
+                new_hexastring += ' '
+            new_hexastring += curr_num
+            count += 1
+
+    elif endian == 'little':
+        # Little Endian: Reverse the hex string and reverse the pairs.
+        new_hexastring = hexastring[::-1]
+        num_pairs = [new_hexastring[curr_num:curr_num+2] for curr_num in range(0, len(new_hexastring), 2)]
+        new_hexastring = ' '.join(reversed(num_pairs))
+
+    if negative:
+        new_hexastring = '-' + new_hexastring
+    return new_hexastring
