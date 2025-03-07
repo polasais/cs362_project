@@ -122,6 +122,8 @@ def my_datetime_helper_function(year):
 
 def conv_endian(num, endian='big'):
     """Takes an integer (num) and converts it to a hexadecimal number."""
+    if endian != 'big' or endian != 'little':
+        return None
     negative = False
     if num[0] == '-':
         negative = True
@@ -144,9 +146,15 @@ def conv_endian(num, endian='big'):
             num = 'E'
         elif num == '15':
             num = 'F'
-    hexstring = ''
+    # Add the values from the remainders as string to create the hexadecimal value.
+    hexastring = ''
+    count = 0
     for num in hexadecimal:
-        hexstring += num
+        # For every 2nd number, add an extra space between the current and the next number.
+        if count % 2 == 0:
+            hexastring += ' '
+        count += 1
+        hexastring += str(num)
+    # Insert a negative in the front if the original int was negative.
     if negative is True:
-        hexstring = -hexstring
-    
+        hexastring.insert(0, '-')
