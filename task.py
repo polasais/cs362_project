@@ -135,25 +135,27 @@ def conv_endian(num, endian='big'):
         remainder = num % 16
         hexadecimal.insert(0, str(remainder))
         num = num // 16
+    hexastring = ''
     for num in hexadecimal:
         if num == '10':
-            num = 'A'
+            hexastring += 'A'
         elif num == '11':
-            num = 'B'
+            hexastring += 'B'
         elif num == '12':
-            num = 'C'
+            hexastring += 'C'
         elif num == '13':
-            num = 'D'
+            hexastring += 'D'
         elif num == '14':
-            num = 'E'
+            hexastring += 'E'
         elif num == '15':
-            num = 'F'
+            hexastring += 'F'
+        else:
+            hexastring += str(num)
+
     # Add the values from the remainders as string to create the hex val.
-    hexastring = ''
     count = 0
     if endian == 'big':
-        for num in hexadecimal:
-            hexastring += str(num)
+        for i in hexastring:
             # Every 2nd number, add an extra space btwn the current & the next num.
             if count % 2 == 0:
                 hexastring += ' '
@@ -161,8 +163,8 @@ def conv_endian(num, endian='big'):
             count += 1
     elif endian == 'little':
         new_hexastring = hexastring[::-1]
-        for num in hexadecimal:
-
+        
     # Insert a negative in the front if the original int was negative.
     if negative is True:
-        hexastring.insert(0, '-')
+        hexastring = '-' + hexastring
+    return hexastring
