@@ -4,7 +4,6 @@
 # Implements:
 #   1) conv_num(num_str)
 #   2) my_datetime(num_sec)
-#   3) conv_endian(num, endian='big')
 #
 # Follows all assignment restrictions.
 #############################################
@@ -119,38 +118,3 @@ def my_datetime_helper_function(year):
     if (year % 4) == 0:
         return True
     return False
-
-
-def conv_endian(num, endian='big'):
-    """
-    Converts an integer 'num' to a hexadecimal string in 'big' or 'little' endian.
-    """
-
-    if endian not in ('big', 'little'):
-        return None
-
-    is_negative = (num < 0)
-    num = abs(num)
-
-    if num == 0:
-        bytes_list = ["00"]
-    else:
-        hex_digits = "0123456789ABCDEF"
-        hex_str = ""
-        temp = num
-        while temp > 0:
-            remainder = temp % 16
-            hex_str = hex_digits[remainder] + hex_str
-            temp //= 16
-
-        if len(hex_str) % 2 != 0:
-            hex_str = "0" + hex_str
-
-        bytes_list = [hex_str[i:i+2] for i in range(0, len(hex_str), 2)]
-
-    if endian == 'little':
-        bytes_list.reverse()
-
-    result = " ".join(bytes_list)
-
-    return f"-{result}" if is_negative else result
