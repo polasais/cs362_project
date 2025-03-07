@@ -125,18 +125,20 @@ def conv_endian(num, endian='big'):
     if endian != 'big' and endian != 'little':
         return None
     negative = False
+
     # If int is neg, make pos for now so it's easier to work with, and later make back to neg.
     if num < 0:
         negative = True
         num = abs(num)
 
     hexadecimal = []
+    hexastring = ''
+
     while num > 0:
         remainder = num % 16
         hexadecimal.insert(0, str(remainder))
         num = num // 16
 
-    hexastring = ''
     for num in hexadecimal:
         if num == '10':
             hexastring += 'A'
@@ -164,6 +166,7 @@ def conv_endian(num, endian='big'):
             # Since it's big endian, just add remainders in normal order.
             new_hexastring += curr_num
             count += 1
+
     elif endian == 'little':
         new_hexastring = hexastring[::-1]
         # Create a list of num pairs that will need to be reversed.
