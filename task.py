@@ -2,8 +2,9 @@
 # task.py
 #
 # Implements:
-#   1) conv_num(num_str)
-#   2) my_datetime(num_sec)
+#   1) conv_num(num_str) with helper functions
+#   2) my_datetime(num_sec) with helper function
+#   3) conv_endian(num, endian='big') with helper function
 #
 # Follows all assignment restrictions.
 #############################################
@@ -57,8 +58,18 @@ def parse_float(num_str):
     if right and not right.isdigit():
         return None
 
-    integer_value = sum((ord(c) - ord('0')) * (10 ** i) for i, c in enumerate(reversed(left))) if left else 0
-    fractional_value = sum((ord(c) - ord('0')) * (10 ** -(i + 1)) for i, c in enumerate(right))
+    # figure out left of .
+    integer_value = 0
+    if left:
+        for i, c in enumerate(reversed(left)):
+            digit_value = ord(c) - ord('0')
+            integer_value += digit_value * (10 ** i)
+
+    # figure out right of .
+    fractional_value = 0
+    for i, c in enumerate(right):
+        digit_value = ord(c) - ord('0')
+        fractional_value += digit_value * (10 ** -(i + 1))
 
     result = integer_value + fractional_value
     return -result if is_negative else result
@@ -72,7 +83,12 @@ def parse_integer(num_str):
     if not num_str.isdigit():
         return None
 
-    integer_value = sum((ord(c) - ord('0')) * (10 ** i) for i, c in enumerate(reversed(num_str)))
+    integer_value = 0
+    for i, c in enumerate(reversed(num_str)):
+        digit_value = ord(c) - ord('0')
+        place_value = 10 ** i
+        integer_value += digit_value * place_value
+
     return -integer_value if is_negative else integer_value
 
 
@@ -148,7 +164,7 @@ def convert_to_hex(num):
 
 
 def conv_endian(num, endian='big'):
-    """Converts an integer to a hexadecimal string in either big or little endian format."""
+    """Converts an int to a hex string in either big or little endian form."""
     if endian != 'big' and endian != 'little':
         return None
 
@@ -160,21 +176,21 @@ def conv_endian(num, endian='big'):
     hexastring = convert_to_hex(num)
 
     if endian == 'big':
-        # Big Endian: Just return the hex string with spaces between every two digits.
+        # Big Endian: return the hex string w/ spaces between every two digits.
         count = 0
-        new_hexastring = ''
+        new_hex = ''
         for curr_num in hexastring:
             if count % 2 == 0 and count != 0:
-                new_hexastring += ' '
-            new_hexastring += curr_num
+                new_hex += ' '
+            new_hex += curr_num
             count += 1
 
     elif endian == 'little':
         # Little Endian: Reverse the hex string and reverse the pairs.
-        new_hexastring = hexastring[::-1]
-        num_pairs = [new_hexastring[curr_num:curr_num+2] for curr_num in range(0, len(new_hexastring), 2)]
-        new_hexastring = ' '.join(reversed(num_pairs))
+        new_hex = hexastring[::-1]
+        num_pairs = [new_hex[i:i+2] for i in range(0, len(new_hex), 2)]
+        new_hex = ' '.join(reversed(num_pairs))
 
     if negative:
-        new_hexastring = '-' + new_hexastring
-    return new_hexastring
+        new_hex = '-' + new_hex
+    return new_hex
