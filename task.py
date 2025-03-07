@@ -146,15 +146,20 @@ def conv_endian(num, endian='big'):
             num = 'E'
         elif num == '15':
             num = 'F'
-    # Add the values from the remainders as string to create the hexadecimal value.
+    # Add the values from the remainders as string to create the hex val.
     hexastring = ''
     count = 0
-    for num in hexadecimal:
-        # For every 2nd number, add an extra space between the current and the next number.
-        if count % 2 == 0:
-            hexastring += ' '
-        count += 1
-        hexastring += str(num)
+    if endian == 'big':
+        for num in hexadecimal:
+            hexastring += str(num)
+            # Every 2nd number, add an extra space btwn the current & the next num.
+            if count % 2 == 0:
+                hexastring += ' '
+            # Since it's big endian, just add remainders in normal order.
+            count += 1
+    elif endian == 'little':
+        for num in hexadecimal:
+            
     # Insert a negative in the front if the original int was negative.
     if negative is True:
         hexastring.insert(0, '-')
