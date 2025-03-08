@@ -174,6 +174,9 @@ def conv_endian(num, endian='big'):
         num = abs(num)
 
     hexastring = convert_to_hex(num)
+    # Add a 0 if it's an uneven integer length.
+    if len(hexastring) % 2 != 0:
+        hexastring = "0" + hexastring
 
     if endian == 'big':
         # Big Endian: return the hex string w/ spaces between every two digits.
@@ -187,8 +190,7 @@ def conv_endian(num, endian='big'):
 
     elif endian == 'little':
         # Little Endian: Reverse the hex string and reverse the pairs.
-        new_hex = hexastring[::-1]
-        num_pairs = [new_hex[i:i+2] for i in range(0, len(new_hex), 2)]
+        num_pairs = [hexastring[i:i+2] for i in range(0, len(hexastring), 2)]
         new_hex = ' '.join(reversed(num_pairs))
 
     if negative:
