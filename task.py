@@ -14,7 +14,6 @@ def conv_num(num_str):
     Converts a string to an integer, float, or hexadecimal integer.
     Returns None for invalid formats.
     """
-
     if not isinstance(num_str, str) or not num_str.strip():
         return None
 
@@ -58,15 +57,15 @@ def parse_float(num_str):
     if right and not right.isdigit():
         return None
 
-    # figure out left of .
+    # Left part of .
     integer_value = 0
     if left:
         for i, c in enumerate(reversed(left)):
             digit_value = ord(c) - ord('0')
             integer_value += digit_value * (10 ** i)
 
-    # figure out right of .
-    fractional_value = 0
+    # Right part of .
+    fractional_value = 0.0  # Ensure float type
     for i, c in enumerate(right):
         digit_value = ord(c) - ord('0')
         fractional_value += digit_value * (10 ** -(i + 1))
@@ -96,7 +95,6 @@ def my_datetime(num_sec):
     """
     Converts an integer num_sec (seconds since 01-01-1970) into "MM-DD-YYYY".
     """
-
     days_since_epoch = num_sec // 86400
 
     days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -175,21 +173,18 @@ def conv_endian(num, endian='big'):
 
     hexastring = convert_to_hex(num)
 
+    if len(hexastring) % 2 != 0:
+        hexastring = "0" + hexastring  # Ensure even length
+
     if endian == 'big':
         # Big Endian: return the hex string w/ spaces between every two digits.
-        count = 0
-        new_hex = ''
-        for curr_num in hexastring:
-            if count % 2 == 0 and count != 0:
-                new_hex += ' '
-            new_hex += curr_num
-            count += 1
+        num_pairs = [hexastring[i:i+2] for i in range(0, len(hexastring), 2)]
+        new_hex = " ".join(num_pairs)
 
     elif endian == 'little':
         # Little Endian: Reverse the hex string and reverse the pairs.
-        new_hex = hexastring[::-1]
-        num_pairs = [new_hex[i:i+2] for i in range(0, len(new_hex), 2)]
-        new_hex = ' '.join(reversed(num_pairs))
+        num_pairs = [hexastring[i:i+2] for i in range(0, len(hexastring), 2)]
+        new_hex = " ".join(reversed(num_pairs))
 
     if negative:
         new_hex = '-' + new_hex
