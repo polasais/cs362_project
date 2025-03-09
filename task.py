@@ -14,6 +14,7 @@ def conv_num(num_str):
     Converts a string to an integer, float, or hexadecimal integer.
     Returns None for invalid formats.
     """
+
     if not isinstance(num_str, str) or not num_str.strip():
         return None
 
@@ -26,6 +27,7 @@ def conv_num(num_str):
         return parse_float(num_str)
 
     return parse_integer(num_str)
+
 
 
 def parse_hex(num_str):
@@ -95,6 +97,7 @@ def my_datetime(num_sec):
     """
     Converts an integer num_sec (seconds since 01-01-1970) into "MM-DD-YYYY".
     """
+
     days_since_epoch = num_sec // 86400
 
     days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -121,6 +124,7 @@ def my_datetime(num_sec):
     day += days_since_epoch
 
     return f"{month:02d}-{day:02d}-{year}"
+
 
 
 def my_datetime_helper_function(year):
@@ -172,6 +176,9 @@ def conv_endian(num, endian='big'):
         num = abs(num)
 
     hexastring = convert_to_hex(num)
+    # Add a 0 if it's an uneven integer length.
+    if len(hexastring) % 2 != 0:
+        hexastring = "0" + hexastring
 
     if len(hexastring) % 2 != 0:
         hexastring = "0" + hexastring  # Ensure even length
