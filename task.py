@@ -29,7 +29,6 @@ def conv_num(num_str):
     return parse_integer(num_str)
 
 
-
 def parse_hex(num_str):
     """Converts a hex string (e.g., 0xFF or -0xAD) to decimal."""
     is_negative = num_str.startswith("-0x")
@@ -124,7 +123,6 @@ def my_datetime(num_sec):
     day += days_since_epoch
 
     return f"{month:02d}-{day:02d}-{year}"
-
 
 
 def my_datetime_helper_function(year):
